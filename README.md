@@ -24,5 +24,5 @@ In general, the team with the most gold wins. Most actions (enemy champion kills
 But wait, when comparing beta distributions with increasing margins of blue vision greater than red vision, these graphs tell a different story. It looks like blue can maximize their chance of winning by having better vision than red, but only by about 8 to 10 wards. After that, there are negative returns!
 
 
-<img src="images/chall.gif" alt="Challenger" width="200" height="200"/><img src="images/gm.gif" alt="Grand Master" width="200" height="200"/><img src="images/m.gif" alt="Master" width="200" height="200"/>
+<img src="images/chall.gif" alt="Challenger" width="250" height="250"/><img src="images/gm.gif" alt="Grand Master" width="250" height="250"/><img src="images/m.gif" alt="Master" width="250" height="250"/>
 <!-- * ![chall_gif](images/chall.gif) ![gm_gif](images/gm.gif) ![m_gif](images/m.gif) -->
