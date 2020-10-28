@@ -113,6 +113,13 @@ def gold_graph(df, columns, param1, param2, sample_col, title="Gold Graph"):
     plt.savefig(f"images/{title}.png")
     plt.show()
 
+def get_linear_reg(df,columns,dep_var):
+    x = sm.tools.tools.add_constant(df[columns].values)
+    y = df[dep_var]
+    model = sm.OLS(y,x)
+    results = model.fit()
+    print(results.summary())
+    return results,x,y
 
 if __name__=='__main__':
 
@@ -134,12 +141,22 @@ if __name__=='__main__':
 
     # Showing the Linear-Regression of total gold against wards, kills, healing, and object damage.
 
+    columns = ['blueWardPlaced','blueKills','blueTotalHeal','blueObjectDamageDealt']
+    results,x,y = get_linear_reg(chall_df_clean, columns, 'blueTotalGold')
+    y_predict = results.predict(x)
+    residuals = y_predict - y
+    plt.scatter(y_predict,residuals, alpha=0.005)
+    plt.savefig("images/hetero_graph.png")
+    plt.show()
 
+    stats.probplot(residuals, dist="norm", plot=plt)
+    plt.savefig("images/qq_plot.png")
+    plt.show()
 
 
     # Getting sets of 25 graphs for each tier of play to create GIF's showing how over-investment in vision
     # can be detrimental to a team's win-rate.
-    columns = ['blueWins','blueWardPlaced', 'redWardPlaced']
+    # columns = ['blueWins','blueWardPlaced', 'redWardPlaced']
 
     # for i in range(0,26):
     #     fig, ax = plt.subplots(1,1,figsize=(4,4))
@@ -151,12 +168,12 @@ if __name__=='__main__':
 
     # columns = ['blueWins','blueWardkills', 'redWardkills']
 
-    for i in range(0,26):
-        fig, ax = plt.subplots(1,1,figsize=(4,4))
-        a_vision_samples = get_samples(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced',scale=i)
-        plot_beta_dist(a_vision_samples, ax, label=f"Vision Greater by {i}",xlim=[0.6,0.7],xtick=(0.6,0.7))
-        ax.legend()
-        ax.set_title("Challenger Rank")
-        ax.tick_params(axis='x',rotation=65)
-        plt.savefig(f'images/chall_{i}.png')
-        plt.show()
+    # for i in range(0,26):
+    #     fig, ax = plt.subplots(1,1,figsize=(4,4))
+    #     a_vision_samples = get_samples(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced',scale=i)
+    #     plot_beta_dist(a_vision_samples, ax, label=f"Vision Greater by {i}",xlim=[0.6,0.7],xtick=(0.6,0.7))
+    #     ax.legend()
+    #     ax.set_title("Challenger Rank")
+    #     ax.tick_params(axis='x',rotation=65)
+    #     plt.savefig(f'images/chall_{i}.png')
+    #     plt.show()
