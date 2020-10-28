@@ -4,16 +4,24 @@ For this project, I am primarily interested in expanding my toolset for explorin
 
 ## Dataset
 
-[League of Legends Dataset](https://www.kaggle.com/bobbyscience/league-of-legends-diamond-ranked-games-10-min)
+<img src="images/logo.jpeg" alt="logo" width="1000" height="800"/>
 
-### Expectations
+[League of Legends Dataset](https://www.kaggle.com/gyejr95/league-of-legends-challenger-ranked-games2020)
 
-I am a big fan of video games, so I thought using a video game data set would make for an interesting project. I would like to use the League of Legends Diamond Ranked Games data set from Kaggle for this capstone. This data set has columns containing vital team statistics that can be used to show correlation with wins and generate a likelihood prediction for whether a team will win or lose. There are 40 columns, with approx. 20 for each team’s statistics per game, and there are almost 10,000 rows of data. I think this data (because each row is a snapshot of a single game, which is a summary of the game, but not a summary across games) will be suitable for exploration and analysis and is large enough to answer some interesting questions. 
+## The Game
 
-I hope to be able to answer (with some degree of confidence) some long-standing lay-community gamers’ questions, such as:
+League of Legends is a MOBA-style (Multiplayer-Online-Battle-Arena) game where two teams of 5 champions each face off on Summoner's Rift to see who can destroy the other's Nexus (base) first. A team's base will continuously generate minions that walk down one of three lanes and attack any threats they come upon (other minions, towers, enemy champions). As a player, you control a champion who can support any of the three lanes of battle by killing enemy champions, minions, or towers, or a player can accrue team advantages by killing neutral 'jungle' minions to gain gold or buffs. 
 
-1. “Is there an advantage to be on either Red or Blue side in a game?” 
-2. “At Diamond rank, does vision matter more or less than lane domination or jungle domination?” 
-3. “Is cs (last-hit minion-kills) more important than kills at Diamond rank?”
+In general, a good strategy is to get more enemy champion kills and more minion kills than your opponents, and generally that leads to a victory. However, there are other complex features to the game that contribute or detract from a player's chance of winning, and my goal here will be to use this dataset to examine some of these other factors.
 
-I hope to generate more interesting questions as I explore the data, but these will do to start me on the process of digging into the set.
+### How good is total gold as a predictor of a team's victory?
+
+In general, the team with the most gold wins. Most actions (enemy champion kills, minion kills, objective kills) give gold to the player, and there is passive gold gained over time. Every player knows this, but I decided to briefly test this assumption.
+
+
+### What if I can't get kills? Our Linear Regression says we can just place wards instead and win with our vision-skills!
+
+But wait, when comparing beta distributions with increasing margins of blue vision greater than red vision, these graphs tell a different story. It looks like blue can maximize their chance of winning by having better vision than red, but only by about 8 to 10 wards. After that, there are negative returns!
+
+
+* ![chall_gif](images/chall.gif) ![gm_gif](images/gm.gif) ![m_gif](images/m.gif)
