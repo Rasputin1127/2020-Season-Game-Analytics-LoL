@@ -25,4 +25,6 @@ But wait, when comparing beta distributions with increasing margins of blue visi
 
 
 <img src="images/chall.gif" alt="Challenger" width="250" height="250"/><img src="images/gm.gif" alt="Grand Master" width="250" height="250"/><img src="images/m.gif" alt="Master" width="250" height="250"/>
+
+<img src="images/chall_ward_kills.gif" alt="Challenger" width="250" height="250"/><img src="images/gm_ward_kills.gif" alt="Grand Master" width="250" height="250"/><img src="images/m_ward_kills.gif" alt="Master" width="250" height="250"/>
 <!-- * ![chall_gif](images/chall.gif) ![gm_gif](images/gm.gif) ![m_gif](images/m.gif) -->

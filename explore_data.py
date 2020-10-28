@@ -65,7 +65,7 @@ def plot_beta(alpha, beta, ax, title=None, label=None, xticks=[0.0, 0.5, 1.0]):
     if title:
         ax.set_title(title)
     ax.get_yaxis().set_ticks([])
-    #ax.get_yaxis().set_ticks([np.max(y)])
+    # ax.get_yaxis().set_ticks([np.mean(y)])
     ax.get_xaxis().set_ticks(xticks)
     ax.set_ylim(0.0, np.max(y)*1.2)
 
@@ -78,37 +78,85 @@ def get_beta_dist_params(dist_samples):
     mean = 1 * num_conversions / total_visitors
     return alpha, beta, mean, num_conversions, total_visitors
 
-def plot_beta_dist(website_samples, ax, label=None, xlim=(0,1)):
+def plot_beta_dist(website_samples, ax, label=None, xlim=(0,1),lst=None, xtick=(0,1)):
     alpha, beta, mean, num_conversions, total_visitors = get_beta_dist_params(website_samples)
     title = None if label else r"Converted {}/{}".format(num_conversions, total_visitors)
-    plot_beta(alpha, beta, ax, title, label, [0.0, mean, 1.0])
+    plot_beta(alpha, beta, ax, title, label, [xtick[0], mean, xtick[1]])
+    if lst:
+        lst.append(mean)
     ax.set_xlabel("Win Rate")
     ax.set_ylabel("Probability Density")
+    # ax.get_yaxis().set_ticks([0,100])
     ax.set_xlim(xlim)
 
-def get_samples(df, columns, param1, param2, scale=0):
+def get_samples(df, columns, param1, param2, sample_col=None, scale=0):
     new_df = df[columns]
     a = new_df[new_df[param1] > new_df[param2] + scale]
-    return a[columns[0]]
+    if sample_col:
+        samples = a[sample_col]
+        return samples
+    else:
+        return a[columns[0]]
 
-
+def gold_graph(df, columns, param1, param2, sample_col, title="Gold Graph"):
+    fig, ax = plt.subplots(1,1,figsize=(8,8))
+    tick_list = [0]
+    for i in range(0,3001,1000):
+        chall_samples = get_samples(df, columns, param1, param2, sample_col,i)
+        plot_beta_dist(chall_samples, ax, label=f"Gold Greater by {i}", lst=tick_list)
+    tick_list.append(1)
+    ax.get_xaxis().set_ticks(tick_list)
+    ax.set_xlim(0.97,1)
+    ax.tick_params(axis='x', rotation=65)
+    ax.legend()
+    plt.title(title)
+    plt.savefig(f"images/{title}.png")
+    plt.show()
 
 
 if __name__=='__main__':
+
+    # Reading data into pandas DataFrames
     chall_df = get_data('Data/Challenger_Ranked_Games.csv')
     gm_df = get_data('Data/GrandMaster_Ranked_Games.csv')
     m_df = get_data('Data/Master_Ranked_Games.csv')
 
+    # Cleaning the data to exclude games that are too short and produce outlier data
     chall_df_clean = chall_df[chall_df['gameDuraton'] > 600]
     gm_df_clean = gm_df[gm_df['gameDuraton'] > 600]
     m_df_clean = m_df[m_df['gameDuraton'] > 600]
 
+    # Getting a gold graph for each tier of play that shows how well gold correlates with victory
+    # columns = ['blueWins','blueTotalGold','redTotalGold']
+    # gold_graph(chall_df_clean, columns, 'blueTotalGold', 'redTotalGold', 'blueWins', "Challenger Gold Graph")
+    # gold_graph(gm_df_clean, columns, 'blueTotalGold', 'redTotalGold', 'blueWins', "Grand Master Gold Graph")
+    # gold_graph(m_df_clean, columns, 'blueTotalGold', 'redTotalGold', 'blueWins', "Master Gold Graph")
+
+    # Showing the Linear-Regression of total gold against wards, kills, healing, and object damage.
+
+
+
+
+    # Getting sets of 25 graphs for each tier of play to create GIF's showing how over-investment in vision
+    # can be detrimental to a team's win-rate.
     columns = ['blueWins','blueWardPlaced', 'redWardPlaced']
-    
+
+    # for i in range(0,26):
+    #     fig, ax = plt.subplots(1,1,figsize=(4,4))
+    #     a_vision_samples = get_samples(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced',i)
+    #     plot_beta_dist(a_vision_samples, ax, label=f"Vision Greater by {i}",xlim=(0.6,0.7))
+    #     ax.legend()
+    #     plt.savefig(f'images/chall_{i}.png')
+    #     plt.show()
+
+    # columns = ['blueWins','blueWardkills', 'redWardkills']
+
     for i in range(0,26):
         fig, ax = plt.subplots(1,1,figsize=(4,4))
-        a_vision_samples = get_samples(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced',i)
-        plot_beta_dist(a_vision_samples, ax, label=f"Vision Greater by {i}",xlim=(0.6,0.7))
+        a_vision_samples = get_samples(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced',scale=i)
+        plot_beta_dist(a_vision_samples, ax, label=f"Vision Greater by {i}",xlim=[0.6,0.7],xtick=(0.6,0.7))
         ax.legend()
+        ax.set_title("Challenger Rank")
+        ax.tick_params(axis='x',rotation=65)
         plt.savefig(f'images/chall_{i}.png')
         plt.show()
