@@ -25,29 +25,31 @@ I use a linear regression of least squares on my 'blueWardPlaced, 'blueKills','b
 3. Normality - To test the normality assumption, I used a QQ-plot of my residuals as seen below. This graph indicates that my residuals resemble a normal distribution,  but it does appear that there is some slight over-peaking in the middle of my distribution.
 
 <p align="center">
-    <img src="images/qq_plot.png" width='500' height='400'/>
+    <img src="images/qq_plot.png" width='750' height='600'/>
 </p>
 
 4. Homoscedasticity - Again, I use a plot (this time a scatter) of my residuals to test for homoscedasticity. This plot indicates that my data is relatively homoscedatic, but not perfectly so.
 
-<img src="images/hetero_graph.png" width=500 height=400/>
+<p align="center">
+    <img src="images/hetero_graph.png" width='750' height='600'/>
+</p>
 
 5. Multicollinearity - I checked the VIF score of each coefficient, and found the following:
 
-* 'blueWardPlaced' = 7.04
-* 'blueKills' = 5.43
-* 'blueTotalHeal' = 8.03
-* 'blueObjectDamageDealt' = 7.10
+* **'blueWardPlaced' = 7.04**
+* **'blueKills' = 5.43**
+* **'blueTotalHeal' = 8.03**
+* **'blueObjectDamageDealt' = 7.10**
 
 These scores indicate a moderate amount of multicollinearity, which could cause some concern. However, I attribute this to the fact that in many cases, getting a kill or damaging an object also induce healing in the champion who is doing the damage due to the effects of items and champion characteristics. So I removed healing from the regression, and discovered that this did not greatly effect the overall VIF scores of each of the other three variables, nor did it influence their coefficients by a large amount, so I decided to leave my regression as is and just accept that there could be some variation in my coefficients based on the potential multicollinearity of my variables.
 
 
 After satisfying myself that the 5 assumptions for a linear regression were met to some satisfaction, I decided to go ahead with my columns for regression. My regression shows the following coefficients:
 
-1. 'blueWardPlaced' = 164.88
-2. 'blueKills' = 748.24
-3. 'blueTotalHeal' = 0.19
-4. 'blueObjectDamageDealt' = 0.016
+1. **'blueWardPlaced' = 164.88**
+2. **'blueKills' = 748.24**
+3. **'blueTotalHeal' = 0.19**
+4. **'blueObjectDamageDealt' = 0.016**
 
 Each of these coefficients had a p-value incredibly close to zero, making it likely that each of these independent variables are effectively influencing the dependent variable accurately based on our coefficients. In other words, we can be fairly confident that something like, "for each blue Ward placed in a game, this translates to approximately an increase in overall gold for the blue team by a factor of about 165 gold." This indicates that even if we can't get enemy champion kills (a more sure strategy), it appears that if we just out-vision our opponents, then we will still generate more gold and win the game. However, based on my assumptions, it appeared to me that a closer look at vision was appropriate, so I decided to do some testing using beta distributions.
 
