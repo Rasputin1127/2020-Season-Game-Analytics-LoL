@@ -121,6 +121,23 @@ def get_linear_reg(df,columns,dep_var):
     print(results.summary())
     return results,x,y
 
+def plot_linear_reg(results,x,y,title="Test for Homoscedasticity",filename1="images/homo_graph.png",filename2="images/qq_plot.png"):
+    y_predict = results.predict(x)
+    residuals = y_predict - y
+    fig,ax = plt.subplots(1,1)
+    ax.scatter(y_predict,residuals, alpha=0.01)
+    plt.title(title)
+    ax.set_xlabel("Gold")
+    ax.set_ylabel("Variance")
+    ax.set_ylim(-15000,15000)
+    ax.set_xlim(15000, 80000)
+    plt.savefig(filename1)
+    plt.show()
+
+    stats.probplot(residuals, dist="norm", plot=plt)
+    plt.savefig(filename2)
+    plt.show()
+
 if __name__=='__main__':
 
     # Reading data into pandas DataFrames
@@ -142,17 +159,18 @@ if __name__=='__main__':
     # Showing the Linear-Regression of total gold against wards, kills, healing, and object damage.
 
     columns = ['blueWardPlaced','blueKills','blueTotalHeal','blueObjectDamageDealt']
+
+    # Challenger data
     results,x,y = get_linear_reg(chall_df_clean, columns, 'blueTotalGold')
-    y_predict = results.predict(x)
-    residuals = y_predict - y
-    plt.scatter(y_predict,residuals, alpha=0.005)
-    plt.savefig("images/hetero_graph.png")
-    plt.show()
+    plot_linear_reg(results,x,y, title="Challenger Homoscedasticity", filename1="images/chall_homo_graph.png", filename2="images/chall_qq_plot.png")
 
-    stats.probplot(residuals, dist="norm", plot=plt)
-    plt.savefig("images/qq_plot.png")
-    plt.show()
+    # Grand Master data
+    results,x,y = get_linear_reg(gm_df_clean, columns, 'blueTotalGold')
+    plot_linear_reg(results,x,y, title="Grand Master Homoscedasticity", filename1="images/gm_homo_graph.png", filename2="images/gm_qq_plot.png")
 
+    # Master data
+    results,x,y = get_linear_reg(m_df_clean, columns, 'blueTotalGold')
+    plot_linear_reg(results,x,y, title="Master Homoscedasticity", filename1="images/m_homo_graph.png", filename2="images/m_qq_plot.png")
 
     # Getting sets of 25 graphs for each tier of play to create GIF's showing how over-investment in vision
     # can be detrimental to a team's win-rate.

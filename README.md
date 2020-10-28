@@ -18,6 +18,12 @@ In general, a good strategy is to get more enemy champion kills and more minion 
 
 In general, the team with the most gold wins. Most actions (enemy champion kills, minion kills, objective kills) give gold to the player, and there is passive gold gained over time. Every player knows this, but I decided to briefly test this assumption.
 
+To test this, I settled on a beta distribution of blue gold versus red gold when blue wins the game. This distribution gave me a mean win-rate for blue when they have more gold of about 98%, and when I increased the margin of victory in blue gold over red gold (by increments of 1000), it approaches 100%, which means beating your opponent in total gold correlates **very** well with winning the game, and this makes sense because most actions in the game produce gold in various ways, so accomplishing more objectives, getting more kills, etc. will usually result in more gold. This allows players to purchase more items in-game, which increase their champion's power, allowing them to achieve victory.
+
+<img src="images/challenger_gold_graph.png" width='275' height='275'><img src="images/grand_master_gold_graph.png" width='275' height='275'><img src="images/master_gold_graph.png" width='275' height='275'>
+
+## Linear Regressions of a Few Things
+
 I use a linear regression of least squares on my 'blueWardPlaced, 'blueKills','blueTotalHeal', and 'blueTotalObjectDamage' columns, and use blue's wins as the dependent variable. Of course, in order to use a linear regression, I needed to confirm that some assumptions were true.
 
 1. Linearity - I believe these four columns can be modeled linearly because each kill (x) is worth a certain amount of gold (y), and even though ward placement, healing, and object damage don't correlate quite so nicely, they are still aspects of the game that can feasibly be interpreted to say something like "for each bit of 'x' I perform, it is worth 'y' amount of gold to my team."
