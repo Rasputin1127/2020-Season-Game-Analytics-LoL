@@ -40,7 +40,7 @@ def check_VIF_values(df, columns, results):
     vif_data = pd.DataFrame()
     vif_data["feature"] = x.columns
 
-    vif_data["VIF"] = [variance_inflation_factor(x.values, i) for i in range(len(x.columns))] 
+    vif_data["VIF"] = [variance_inflation_factor(x.values, i) for i in range(len(x.columns))]
 
     p_values = pd.DataFrame(results.pvalues)
     vif_data["p_values"] = p_values.values[1:]
@@ -158,19 +158,19 @@ if __name__=='__main__':
 
     # Showing the Linear-Regression of total gold against wards, kills, healing, and object damage.
 
-    columns = ['blueWardPlaced','blueKills','blueTotalHeal','blueObjectDamageDealt']
+    # columns = ['blueWardPlaced','blueKills','blueTotalHeal','blueObjectDamageDealt']
 
     # Challenger data
-    results,x,y = get_linear_reg(chall_df_clean, columns, 'blueTotalGold')
-    plot_linear_reg(results,x,y, title="Challenger Homoscedasticity", filename1="images/chall_homo_graph.png", filename2="images/chall_qq_plot.png")
+    # results,x,y = get_linear_reg(chall_df_clean, columns, 'blueTotalGold')
+    # plot_linear_reg(results,x,y, title="Challenger Homoscedasticity", filename1="images/chall_homo_graph.png", filename2="images/chall_qq_plot.png")
 
-    # Grand Master data
-    results,x,y = get_linear_reg(gm_df_clean, columns, 'blueTotalGold')
-    plot_linear_reg(results,x,y, title="Grand Master Homoscedasticity", filename1="images/gm_homo_graph.png", filename2="images/gm_qq_plot.png")
+    # # Grand Master data
+    # results,x,y = get_linear_reg(gm_df_clean, columns, 'blueTotalGold')
+    # plot_linear_reg(results,x,y, title="Grand Master Homoscedasticity", filename1="images/gm_homo_graph.png", filename2="images/gm_qq_plot.png")
 
-    # Master data
-    results,x,y = get_linear_reg(m_df_clean, columns, 'blueTotalGold')
-    plot_linear_reg(results,x,y, title="Master Homoscedasticity", filename1="images/m_homo_graph.png", filename2="images/m_qq_plot.png")
+    # # Master data
+    # results,x,y = get_linear_reg(m_df_clean, columns, 'blueTotalGold')
+    # plot_linear_reg(results,x,y, title="Master Homoscedasticity", filename1="images/m_homo_graph.png", filename2="images/m_qq_plot.png")
 
     # Getting sets of 25 graphs for each tier of play to create GIF's showing how over-investment in vision
     # can be detrimental to a team's win-rate.
