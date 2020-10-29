@@ -14,6 +14,9 @@ League of Legends is a MOBA-style (Multiplayer-Online-Battle-Arena) game where t
 
 In general, a good strategy is to get more enemy champion kills and more minion kills than your opponents, and generally that leads to a victory. However, there are other complex features to the game that contribute or detract from a player's chance of winning, and my goal here will be to use this dataset to examine some of these other factors.
 
+
+
+
 ### How good is total gold as a predictor of a team's victory?
 
 In general, the team with the most gold wins. Most actions (enemy champion kills, minion kills, objective kills) give gold to the player, and there is passive gold gained over time. Every player knows this, but I decided to briefly test this assumption.
@@ -22,10 +25,13 @@ To test this, I settled on a beta distribution of blue gold versus red gold when
 
 <img src="images/challenger_gold_graph.png" width='275' height='275'><img src="images/grand_master_gold_graph.png" width='275' height='275'><img src="images/master_gold_graph.png" width='275' height='275'>
 
+
+
+
 ## Next, I wanted to test whether first tower or first dragon was a more important objective for a team to concentrate on achieving.
 
 <p align="center">
-    <img src="images/infernal_dragon.png" width='750' height='600'/>
+    <img src="images/infernal_dragon.png" width='500' height='400'/>
 </p>
 
 Sometimes, in order to accomplish an objective, a team has to 'give up' on another objective, allowing the other team to accomplish the objective instead. In this case, I split the data into two frames representing blue team wins when they killed the first dragon (but did not get the first tower in that game) and when they destroyed the first tower (but did not get the first dragon in that game). I chose to exclude games where they achieved both, as I thought this would not capture what I was trying to test for, namely when the team had to make a hard decision. First, I coded up some things to test the Challenger bracket of play.
@@ -52,6 +58,9 @@ Difference in sample proportions: 0.30
 This was already a surprising result for me! I intuitively believed that getting the first tower would be more valuable, but I conjectured that trading first tower for the first dragon would make a more even result, especially since killing a dragon gives that entire team extra stat-buffs on their champions, but this trade is *heavily* skewed in favor of a blue victory (in this case, by 30%!). I went ahead and coded up a hypothesis test to make sure that variance wasn't doing anything here to mess up the result, but it quite obviously confirmed what I already saw here. Gaining first tower is far more important to increasing a team's win percentage than killing the first dragon.
 
 I also tested this code on the Grand Master and the Master brackets, and found that in Grand Master the margin was slighly larger in favor of taking first tower, and even more so in Master.
+
+
+
 
 ## Linear Regressions of a Few Things
 
@@ -91,17 +100,33 @@ After satisfying myself that the 5 assumptions for a linear regression were met 
 Each of these coefficients had a p-value incredibly close to zero, making it likely that each of these independent variables are effectively influencing the dependent variable accurately based on our coefficients. In other words, we can be fairly confident that something like, "for each blue Ward placed in a game, this translates to approximately an increase in overall gold for the blue team by a factor of about 165 gold." This indicates that even if we can't get enemy champion kills (a more sure strategy), it appears that if we just out-vision our opponents, then we will still generate more gold and win the game. However, based on my assumptions, it appeared to me that a closer look at vision was appropriate, so I decided to do some testing using beta distributions.
 
 
+
+
+
 ## The Vision Game
 
 To begin, I used a beta distribution that compared blue wins out of total games when blue had a larger 'vision score' than their opponent (roughly, they placed more ward trinkets on the map than their opponent). 
-But wait, when comparing beta distributions with increasing margins of blue vision greater than red vision, these graphs tell a different story. It looks like blue can maximize their chance of winning by having better vision than red, but only by about 8 to 10 wards. After that, there are negative returns! I found this by taking multiple beta distributions of blue team's wins vs. red team's wins, but with blue's total ward placement being larger than red's by greater and greater margins. Even though having more wards than your opponent *in general* gives your team an edge, there comes a point where a player can over-invest in vision rather than other objectives that can increase a team's overall gold generation (which then indicates their higher likelihood of winning).
+When comparing beta distributions with increasing margins of blue vision greater than red vision however, these graphs tell an interesting story compared to what we saw in the linear regression. It looks like blue can maximize their chance of winning by having better vision than red, but only by about 8 to 10 wards. After that, there are negative returns! I found this by taking multiple beta distributions of blue team's wins vs. red team's wins, but with blue's total ward placement being larger than red's by greater and greater margins. Even though having more wards than your opponent *in general* gives your team an edge, there comes a point where a player can over-invest in vision rather than other objectives that can increase a team's overall gold generation (which then indicates their higher likelihood of winning).
 
 
 <img src="images/chall.gif" alt="Challenger" width="275" height="275"/><img src="images/gm.gif" alt="Grand Master" width="275" height="275"/><img src="images/m.gif" alt="Master" width="275" height="275"/>
 
+
+
 ### Ok, so investing in lots of vision isn't enough. We need to do that some, but what else?
 
-Continuing in our investigation into how vision impacts a game, I also considered similar beta distributions for each tier of gameplay, but this time focusing around destroying the opposing team's vision. In other words, these gifs display the progression of win rates as one team destroys significantly more vision than the other team. As we can see, destroying the opponent's vision seems to almost consistently improve one's win-rate, though with diminishing returns 
+Continuing in our investigation into how vision impacts a game, I also considered similar beta distributions for each tier of gameplay, but this time focusing around destroying the opposing team's vision. In other words, these gifs display the progression of win rates as one team destroys significantly more vision than the other team. As we can see, destroying the opponent's vision seems to almost consistently improve one's win-rate, though with diminishing returns.
 
 <img src="images/chall_ward_kills.gif" alt="Challenger" width="275" height="275"/><img src="images/gm_ward_kills.gif" alt="Grand Master" width="275" height="275"/><img src="images/m_ward_kills.gif" alt="Master" width="275" height="275"/>
-<!-- * ![chall_gif](images/chall.gif) ![gm_gif](images/gm.gif) ![m_gif](images/m.gif) -->
+
+Either way, it appears that concentrating on vision is a nice way for an average player to improve their gameplay (and their team's overall victory chances) by a significant margin, so long as they are careful not to over-invest in placing vision.
+
+
+
+# Conclusion
+
+So what have I learned from this data?
+
+1. As expected, getting more gold than your opponent generally results in winning the game. However, we cannot see a direct gold comparison until the end of the game, so it is hard to accurately and quickly tell (in-game) whether we are in front of our opponent's gold-wise.
+2. In our team's early game, we should focus on taking the first tower, even if that means giving up on the first dragon. Getting both is nice! But if we have to sacrifice one, we ought to trade the dragon to get a tower.
+3. Kills are the most reliable way to gain gold for your team, but kills aren't always readily available. Instead, we should focus our time on getting good vision (at least better than our opponent) especially with a focus on sweeping out our opponent's vision in order to create advantages that could lead to kills or control of objectives, which results in more gold generation for our team.
