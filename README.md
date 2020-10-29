@@ -22,6 +22,37 @@ To test this, I settled on a beta distribution of blue gold versus red gold when
 
 <img src="images/challenger_gold_graph.png" width='275' height='275'><img src="images/grand_master_gold_graph.png" width='275' height='275'><img src="images/master_gold_graph.png" width='275' height='275'>
 
+## Next, I wanted to test whether first tower or first dragon was a more important objective for a team to concentrate on achieving.
+
+<p align="center">
+    <img src="images/infernal_dragon.png" width='750' height='600'/>
+</p>
+
+Sometimes, in order to accomplish an objective, a team has to 'give up' on another objective, allowing the other team to accomplish the objective instead. In this case, I split the data into two frames representing blue team wins when they killed the first dragon (but did not get the first tower in that game) and when they destroyed the first tower (but did not get the first dragon in that game). I chose to exclude games where they achieved both, as I thought this would not capture what I was trying to test for, namely when the team had to make a hard decision. First, I coded up some things to test the Challenger bracket of play.
+
+```python
+hyp_test_df = chall_df_clean[(chall_df_clean['blueFirstDragon'] > 0) & (chall_df_clean['blueFirstTower'] == 0)]
+hyp_test_df2 = chall_df_clean[(chall_df_clean['blueFirstTower'] > 0) & (chall_df_clean['blueFirstDragon'] == 0)]
+drag_total = len(hyp_test_df)
+tow_total = len(hyp_test_df2)
+drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
+tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
+difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
+print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
+print(f"First tower win frequency: {tow_sample_freq:2.2f}")
+print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
+```
+```python
+Output:
+First dragon win frequency: 0.36
+First tower win frequency: 0.66
+Difference in sample proportions: 0.30
+```
+
+This was already a surprising result for me! I intuitively believed that getting the first tower would be more valuable, but I conjectured that trading first tower for the first dragon would make a more even result, especially since killing a dragon gives that entire team extra stat-buffs on their champions, but this trade is *heavily* skewed in favor of a blue victory (in this case, by 30%!). I went ahead and coded up a hypothesis test to make sure that variance wasn't doing anything here to mess up the result, but it quite obviously confirmed what I already saw here. Gaining first tower is far more important to increasing a team's win percentage than killing the first dragon.
+
+I also tested this code on the Grand Master and the Master brackets, and found that in Grand Master the margin was slighly larger in favor of taking first tower, and even more so in Master.
+
 ## Linear Regressions of a Few Things
 
 I use a linear regression of least squares on my 'blueWardPlaced, 'blueKills','blueTotalHeal', and 'blueTotalObjectDamage' columns, and use blue's wins as the dependent variable. Of course, in order to use a linear regression, I needed to confirm that some assumptions were true.
