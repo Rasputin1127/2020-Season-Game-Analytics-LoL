@@ -4,7 +4,7 @@ For this project, I am primarily interested in expanding my toolset for explorin
 
 ## Dataset
 
-<img src="images/logo.jpeg" alt="logo" width="1000" height="800"/>
+<img src="images/logo.jpeg" alt="logo" width="700" height="600"/>
 
 [League of Legends Dataset](https://www.kaggle.com/gyejr95/league-of-legends-challenger-ranked-games2020)
 
