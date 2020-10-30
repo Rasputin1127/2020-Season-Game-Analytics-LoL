@@ -71,13 +71,13 @@ I decided to use a linear regression of least squares on my 'blueWardPlaced, 'bl
 3. Normality - To test the normality assumption, I used a QQ-plot of my residuals as seen below. This graph indicates that my residuals resemble a normal distribution,  but it does appear that there is some slight over-peaking in the middle of my distribution.
 
 <p align="center">
-    <img src="images/qq_plot.png" width='750' height='600'/>
+    <img src="images/chall_qq_plot.png" width='750' height='600'/>
 </p>
 
 4. Homoscedasticity - Again, I use a plot (this time a scatter) of my residuals to test for homoscedasticity. This plot indicates that my data is relatively homoscedatic, but not perfectly so.
 
 <p align="center">
-    <img src="images/hetero_graph.png" width='750' height='600'/>
+    <img src="images/chall_homo_graph.png" width='750' height='600'/>
 </p>
 
 5. Multicollinearity - I checked the VIF score of each coefficient, and found the following:
