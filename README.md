@@ -64,7 +64,7 @@ I also tested this code on the Grand Master and the Master brackets, and found t
 
 ## Linear Regressions of a Few Things
 
-I use a linear regression of least squares on my 'blueWardPlaced, 'blueKills','blueTotalHeal', and 'blueTotalObjectDamage' columns, and use blue's wins as the dependent variable. Of course, in order to use a linear regression, I needed to confirm that some assumptions were true.
+I decided to use a linear regression of least squares on my 'blueWardPlaced, 'blueKills','blueTotalHeal', and 'blueTotalObjectDamage' columns, and use blue's wins as the dependent variable. Of course, in order to use a linear regression, I needed to confirm that some assumptions were true.
 
 1. Linearity - I believe these four columns can be modeled linearly because each kill (x) is worth a certain amount of gold (y), and even though ward placement, healing, and object damage don't correlate quite so nicely, they are still aspects of the game that can feasibly be interpreted to say something like "for each bit of 'x' I perform, it is worth 'y' amount of gold to my team."
 2. Independence - Using the Durbin-Watson test on my data that is intended for linear regression, I got a score of 1.884. This shows some *positive* auto-correlation with the dependent variable, but very little since the value is close to 2, which means there isn't any auto-correlation.
