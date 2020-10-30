@@ -136,6 +136,7 @@ def plot_linear_reg(results,x,y,title="Test for Homoscedasticity",filename1="ima
     plt.show()
 
     stats.probplot(residuals, dist="norm", plot=plt)
+    plt.ylabel("Gold Values")
     plt.tight_layout()
     plt.savefig(filename2)
     plt.show()
