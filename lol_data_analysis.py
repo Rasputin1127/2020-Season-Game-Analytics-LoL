@@ -109,7 +109,7 @@ def gold_graph(df, columns, param1, param2, sample_col, title="Gold Graph"):
     ax.set_xlim(0.97,1)
     ax.tick_params(axis='x', rotation=65)
     ax.legend()
-    plt.title(title)
+    plt.title(title, fontsize=20)
     # plt.savefig(f"images/{title}.png")
     plt.show()
 

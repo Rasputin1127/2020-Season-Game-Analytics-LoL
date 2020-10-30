@@ -23,7 +23,7 @@ In general, the team with the most gold wins. Most actions (enemy champion kills
 
 To test this, I settled on a beta distribution of blue gold versus red gold when blue wins the game. This distribution gave me a mean win-rate for blue when they have more gold of about 98%, and when I increased the margin of victory in blue gold over red gold (by increments of 1000), it approaches 100%, which means beating your opponent in total gold correlates **very** well with winning the game, and this makes sense because most actions in the game produce gold in various ways, so accomplishing more objectives, getting more kills, etc. will usually result in more gold. This allows players to purchase more items in-game, which increase their champion's power, allowing them to achieve victory.
 
-<img src="images/challenger_gold_graph.png" width='275' height='275'><img src="images/grand_master_gold_graph.png" width='275' height='275'><img src="images/master_gold_graph.png" width='275' height='275'>
+<img src="images/challenger_gold_graph.png" width='350' height='350'><img src="images/grand_master_gold_graph.png" width='350' height='350'><img src="images/master_gold_graph.png" width='350' height='350'>
 
 
 
