@@ -130,3 +130,73 @@ So what have I learned from this data?
 1. As expected, getting more gold than your opponent generally results in winning the game. However, we cannot see a direct gold comparison until the end of the game, so it is hard to accurately and quickly tell (in-game) whether we are in front of our opponent's gold-wise.
 2. In our team's early game, we should focus on taking the first tower, even if that means giving up on the first dragon. Getting both is nice! But if we have to sacrifice one, we ought to trade the dragon to get a tower.
 3. Kills are the most reliable way to gain gold for your team, but kills aren't always readily available. Instead, we should focus our time on getting good vision (at least better than our opponent) especially with a focus on sweeping out our opponent's vision in order to create advantages that could lead to kills or control of objectives, which results in more gold generation for our team.
+
+# Extra!!!
+
+So, even though my linear regression didn't pan out as well as I'd hoped, I still wanted to see if it had any predictive power! I used sklearn tools to split my data set into a random sampling of 80% of the data to train my model, then the other 20% of the data as the test data. Using my model, I found the following results:
+
+```python
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          blueTotalGold   R-squared:                       0.878
+Model:                            OLS   Adj. R-squared:                  0.878
+Method:                 Least Squares   F-statistic:                 2.760e+04
+Date:                Fri, 30 Oct 2020   Prob (F-statistic):               0.00
+Time:                        16:44:10   Log-Likelihood:            -1.4950e+05
+No. Observations:               15311   AIC:                         2.990e+05
+Df Residuals:                   15306   BIC:                         2.990e+05
+Df Model:                           4                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const       1.387e+04    107.164    129.430      0.000    1.37e+04    1.41e+04
+x1           191.1080      2.084     91.712      0.000     187.024     195.192
+x2           641.8963      4.418    145.297      0.000     633.237     650.556
+x3             0.1452      0.004     34.334      0.000       0.137       0.154
+x4             0.0659      0.002     28.278      0.000       0.061       0.070
+==============================================================================
+Omnibus:                     5114.570   Durbin-Watson:                   1.998
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            37532.301
+Skew:                           1.410   Prob(JB):                         0.00
+Kurtosis:                      10.133   Cond. No.                     1.47e+05
+==============================================================================
+
+Model accuracy rate within 5000 total gold on test data: 0.76%
+```
+
+So that wasn't a great model insofar as it only became accurate when I widened the predictive gap to be within 5000 gold. The accuracy falls off dramatically to no better than chance when I narrow it to around 2500 gold.
+
+Instead of getting discouraged, I decided to attempt a logistic regression using blue wins as my binary column dependent variable. I used the same four categories as my independent variables ('blueWardPlaced','blueKills','blueTotalHeal','blueObjectDamageDealt'), and this model looked a lot better!
+
+```python
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:               blueWins   No. Observations:                15311
+Model:                          Logit   Df Residuals:                    15306
+Method:                           MLE   Df Model:                            4
+Date:                Fri, 30 Oct 2020   Pseudo R-squ.:                  0.5955
+Time:                        17:04:52   Log-Likelihood:                -4293.1
+converged:                       True   LL-Null:                       -10613.
+Covariance Type:            nonrobust   LLR p-value:                     0.000
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -2.2288      0.089    -25.091      0.000      -2.403      -2.055
+x1            -0.0740      0.002    -36.232      0.000      -0.078      -0.070
+x2             0.1107      0.004     26.353      0.000       0.102       0.119
+x3         -4.389e-05   3.69e-06    -11.888      0.000   -5.11e-05   -3.67e-05
+x4             0.0001   2.84e-06     51.620      0.000       0.000       0.000
+==============================================================================
+Model accuracy rate for wins on test data: 0.88%
+```
+
+Not bad! I'm sure with some feature engineering I could get some of my values to look better, but I was pretty happy with my accuracy rating. In my case (video game win prediction), accuracy suffices as a measure of a good model, but just in case I found the following stats:
+
+Precision Score: 0.9  
+Recall Score: 0.9  
+ROC: 0.9  
+
+Not too bad! To finish things off, here is a heat map of the confusion matrix for my model's predictions.
+
+<img src="images/heat_map.png" alt="Heat Map" width="500" height="500"/>
