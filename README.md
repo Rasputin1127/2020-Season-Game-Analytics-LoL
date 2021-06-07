@@ -1,4 +1,4 @@
-# Capstone 1 Project
+# League of Legends Data Analysis
 
 For this project, I am primarily interested in expanding my toolset for exploring and analyzing data. I want to be able to generate high-quality graphs and information-conveying charts from a relatively unexplanatory data set so that an untrained or unfamiliar observer can come away from the presentation with adequate understanding of what might be important within that data.
 
