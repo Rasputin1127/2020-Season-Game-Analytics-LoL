@@ -22,7 +22,7 @@ def inferential_regression(df, columns, dep_var):
     model = sm.OLS(y,x)
     return model.fit()
 
-def check_for_homoscedasticity(results, columns, dep_var, alpha=0.005):
+def check_for_homoscedasticity(df, results, columns, dep_var, alpha=0.005):
     x = sm.tools.tools.add_constant(df[columns].values)
     y_predict = results.predict(x)
     residuals = y_predict - y
@@ -186,65 +186,65 @@ if __name__=='__main__':
     plot_linear_reg(results,x,y, title="Challenger Homoscedasticity", filename1="images/chall_homo_graph.png", filename2="images/chall_qq_plot.png")
 
     # # Grand Master data
-    # results,x,y = get_linear_reg(gm_df_clean, columns, 'blueTotalGold')
-    # plot_linear_reg(results,x,y, title="Grand Master Homoscedasticity", filename1="images/gm_homo_graph.png", filename2="images/gm_qq_plot.png")
+    results,x,y = get_linear_reg(gm_df_clean, columns, 'blueTotalGold')
+    plot_linear_reg(results,x,y, title="Grand Master Homoscedasticity", filename1="images/gm_homo_graph.png", filename2="images/gm_qq_plot.png")
 
-    # # Master data
-    # results,x,y = get_linear_reg(m_df_clean, columns, 'blueTotalGold')
-    # plot_linear_reg(results,x,y, title="Master Homoscedasticity", filename1="images/m_homo_graph.png", filename2="images/m_qq_plot.png")
+    # Master data
+    results,x,y = get_linear_reg(m_df_clean, columns, 'blueTotalGold')
+    plot_linear_reg(results,x,y, title="Master Homoscedasticity", filename1="images/m_homo_graph.png", filename2="images/m_qq_plot.png")
 
     # Getting sets of 25 graphs for each tier of play to create GIF's showing how over-investment in vision
     # can be detrimental to a team's win-rate.
-    # columns = ['blueWins','blueWardPlaced', 'redWardPlaced']
+    columns = ['blueWins','blueWardPlaced', 'redWardPlaced']
 
-    # make_gif_of_graphs(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2,filename='c_')
-    # make_gif_of_graphs(gm_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2, filename='gm_')
-    # make_gif_of_graphs(m_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2, filename='m_')
+    make_gif_of_graphs(chall_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2,filename='c_')
+    make_gif_of_graphs(gm_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2, filename='gm_')
+    make_gif_of_graphs(m_df_clean, columns, 'blueWardPlaced', 'redWardPlaced', 2, filename='m_')
 
-    # columns = ['blueWins','blueWardkills', 'redWardkills']
+    columns = ['blueWins','blueWardkills', 'redWardkills']
 
-    # make_gif_of_graphs(chall_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='c', scal=5)
-    # make_gif_of_graphs(gm_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='gm', scal=5)
-    # make_gif_of_graphs(m_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='m', scal=5)
+    make_gif_of_graphs(chall_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='c', scal=5)
+    make_gif_of_graphs(gm_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='gm', scal=5)
+    make_gif_of_graphs(m_df_clean, columns, 'blueWardkills', 'redWardkills', 2, filename='m', scal=5)
 
-    # # Hypothesis Testing Code - Challenger
-    # hyp_test_df = chall_df_clean[(chall_df_clean['blueFirstDragon'] > 0) & (chall_df_clean['blueFirstTower'] == 0)]
-    # hyp_test_df2 = chall_df_clean[(chall_df_clean['blueFirstTower'] > 0) & (chall_df_clean['blueFirstDragon'] == 0)]
+    # Hypothesis Testing Code - Challenger
+    hyp_test_df = chall_df_clean[(chall_df_clean['blueFirstDragon'] > 0) & (chall_df_clean['blueFirstTower'] == 0)]
+    hyp_test_df2 = chall_df_clean[(chall_df_clean['blueFirstTower'] > 0) & (chall_df_clean['blueFirstDragon'] == 0)]
 
-    # drag_total = len(hyp_test_df)
-    # tow_total = len(hyp_test_df2)
-    # drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
-    # print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
-    # tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
-    # print(f"First tower win frequency: {tow_sample_freq:2.2f}")
-    # print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
-    # difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
-    # print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
+    drag_total = len(hyp_test_df)
+    tow_total = len(hyp_test_df2)
+    drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
+    print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
+    tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
+    print(f"First tower win frequency: {tow_sample_freq:2.2f}")
+    print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
+    difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
+    print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
 
-    # # Hypothesis Testing Code - Grand Master
-    # hyp_test_df = gm_df_clean[(gm_df_clean['blueFirstDragon'] > 0) & (gm_df_clean['blueFirstTower'] == 0)]
-    # hyp_test_df2 = gm_df_clean[(gm_df_clean['blueFirstTower'] > 0) & (gm_df_clean['blueFirstDragon'] == 0)]
+    # Hypothesis Testing Code - Grand Master
+    hyp_test_df = gm_df_clean[(gm_df_clean['blueFirstDragon'] > 0) & (gm_df_clean['blueFirstTower'] == 0)]
+    hyp_test_df2 = gm_df_clean[(gm_df_clean['blueFirstTower'] > 0) & (gm_df_clean['blueFirstDragon'] == 0)]
 
-    # drag_total = len(hyp_test_df)
-    # tow_total = len(hyp_test_df2)
-    # drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
-    # print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
-    # tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
-    # print(f"First tower win frequency: {tow_sample_freq:2.2f}")
-    # print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
-    # difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
-    # print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
+    drag_total = len(hyp_test_df)
+    tow_total = len(hyp_test_df2)
+    drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
+    print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
+    tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
+    print(f"First tower win frequency: {tow_sample_freq:2.2f}")
+    print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
+    difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
+    print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
 
-    # # Hypothesis Testing Code - Master
-    # hyp_test_df = m_df_clean[(m_df_clean['blueFirstDragon'] > 0) & (m_df_clean['blueFirstTower'] == 0)]
-    # hyp_test_df2 = m_df_clean[(m_df_clean['blueFirstTower'] > 0) & (m_df_clean['blueFirstDragon'] == 0)]
+    # Hypothesis Testing Code - Master
+    hyp_test_df = m_df_clean[(m_df_clean['blueFirstDragon'] > 0) & (m_df_clean['blueFirstTower'] == 0)]
+    hyp_test_df2 = m_df_clean[(m_df_clean['blueFirstTower'] > 0) & (m_df_clean['blueFirstDragon'] == 0)]
 
-    # drag_total = len(hyp_test_df)
-    # tow_total = len(hyp_test_df2)
-    # drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
-    # print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
-    # tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
-    # print(f"First tower win frequency: {tow_sample_freq:2.2f}")
-    # print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
-    # difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
-    # print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
+    drag_total = len(hyp_test_df)
+    tow_total = len(hyp_test_df2)
+    drag_sample_freq = np.sum(hyp_test_df['blueWins'])/drag_total
+    print(f"First dragon win frequency: {drag_sample_freq:2.2f}")
+    tow_sample_freq = np.sum(hyp_test_df2['blueWins'])/tow_total
+    print(f"First tower win frequency: {tow_sample_freq:2.2f}")
+    print(f"First Dragon win frequency: {drag_sample_freq}, First Tower win frequency: {tow_sample_freq}")
+    difference_in_sample_proportions = tow_sample_freq - drag_sample_freq
+    print("Difference in sample proportions: {:2.2f}".format(difference_in_sample_proportions))
